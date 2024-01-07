@@ -93,7 +93,9 @@ function App() {
 
     const backgroundImageStyle = {
         backgroundImage: `url(${imgs[index]})`,
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        backgroundPositionX: 'center',
+        backgroundPositionY: 'center',
     }
 
   return (
