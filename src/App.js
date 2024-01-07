@@ -2,7 +2,22 @@
 import './App.css';
 import React, { useState } from 'react';
 
-let tables = [1,2,3,4,5,6,7,8,9]
+// images
+import image1 from "./backgrounds/bg1.gif";
+import image2 from "./backgrounds/christmas.gif";
+import image3 from "./backgrounds/christmas2.gif";
+import image4 from "./backgrounds/gumball.gif";
+import image5 from "./backgrounds/minecraftFox.gif";
+import image6 from "./backgrounds/minesOfMoria.gif";
+import image7 from "./backgrounds/minesOfMoria2.gif";
+import image8 from "./backgrounds/space.gif";
+import image9  from "./backgrounds/ttd1.gif";
+import image10 from "./backgrounds/ttd2.gif";
+
+
+let tables = [1,2,3,4,5,6,7,8,9];
+let imgs = [ image1, image2, image3, image4, image5, image6, image7,
+    image8, image9, image10];
 
 function App() {
     let [selectedTable, setSelectedtable] = useState(0);
@@ -12,6 +27,7 @@ function App() {
     let [guess, setGuess] = useState(0);
     let [score, setScore] = useState(0);
     let [wrong, setWrong] = useState(0);
+    let [index, setIndex] = useState(0);
 
 
 
@@ -34,7 +50,7 @@ function App() {
 
     // generate random number2 to practice
     const getNum = () => {
-        let num = Math.floor(Math.random() * (9 - selectedTable) + selectedTable);
+        let num = Math.floor(Math.random() * (9 - 1) + 1);
         setSecondNumber(num);
         console.log(num, " setting sec num");
     }
@@ -67,10 +83,23 @@ function App() {
         }
     }
 
+    // change index to change backround image
+    const next = (e) => {
+        console.log(index, imgs.length);
+        let temp = index +1
+        if (temp >= imgs.length){ temp = 0}
+        setIndex(temp)
+    }
+
+    const backgroundImageStyle = {
+        backgroundImage: `url(${imgs[index]})`,
+        backgroundSize: 'cover'
+    }
 
   return (
-    <div className="App">
-        <div>debug: {selectedTable}, {secondNumber}, {guess}</div>
+    <div className="App" style={backgroundImageStyle}>
+        {/*}<div>debug: {selectedTable}, {secondNumber}, {guess}</div>*/}
+        <div className="next" onClick={next}>Background</div>
 
         <div className="table-type">
             {tables.map((a,b) => <div
@@ -85,7 +114,7 @@ function App() {
             <div>X</div>
             <div>{secondNumber}</div>
             <div> = </div>
-            <input placeholder="answer" value={input} onChange={handleChange}></input>
+            <input placeholder="quick maths" value={input} onChange={handleChange}></input>
             <button type="submit"
                 onClick={check}
                 placeholder="Answer"
@@ -93,8 +122,8 @@ function App() {
         </div>
 
         <div className="scores">
-            <div style={{color: "green"}}>Correct:{score}</div>
-            <div style={{color: "red"}}>Wrong:{wrong}</div>
+            <div style={{color: "green"}}>Yes:  {score}</div>
+            <div style={{color: "red"}}>Not yes:  {wrong}</div>
         </div>
 
         <div className="answerList">
