@@ -6,7 +6,17 @@
   height: 100vh;
   background-size: cover;
 }
+/* main page */
 
+.main {
+    background-color: cyan;
+    width: 100vw;
+    height: 100vh;
+
+}
+
+
+/* multiply */
 
 .table-type{
     display: flex;
@@ -94,4 +104,65 @@ input {
     padding: 5px;
     margin: auto;
     color: white;
+}
+
+
+/*  word search */
+
+.wordSearch {
+    background: lime;
+    width: 100vw;
+    height: 100vh;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.wordBox {
+    margin: auto;
+    height: 20%;
+    max-width: 360px;
+    border-radius: 25px;
+    background-color: rgba(0,0,0, 0.5);
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:  5px 15px;
+    justify-content: space-around;
+}
+
+.word {
+    height: 25px;
+    line-height: 25px;
+}
+
+.wordSearchBox {
+    margin: 20px auto;
+    max-width: 360px;
+    background-color: white;
+    height: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.searchLetter {
+    flex-basis: 8%;
+    background: rgba(200,200,200, 0.5);
+    border: 1px solid black;
+    margin: 2px;
+    width: 25px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.clicked {
+    flex-basis: 8%;
+    background: red;
+    border: 1px solid black;
+    margin: 2px;
+    width: 25px;
+    height: 20px;
+    line-height: 20px;
 }
