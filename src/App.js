@@ -8,16 +8,20 @@ import image2 from "./backgrounds/christmas.gif";
 import image3 from "./backgrounds/christmas2.gif";
 import image4 from "./backgrounds/gumball.gif";
 import image5 from "./backgrounds/minecraftFox.gif";
-import image6 from "./backgrounds/minesOfMoria.gif";
-import image7 from "./backgrounds/minesOfMoria2.gif";
+import image6 from "./backgrounds/minecraftFox.webp";
+import image7 from "./backgrounds/minecraftLava.gif";
 import image8 from "./backgrounds/space.gif";
 import image9  from "./backgrounds/ttd1.gif";
 import image10 from "./backgrounds/ttd2.gif";
+import image11 from "./backgrounds/mkinecraftAxol.gif";
+import image12 from "./backgrounds/picoPark.gif";
+import image13 from "./backgrounds/spider.gif";
+import image14 from "./backgrounds/treeLake.gif";
 
 
 let tables = [1,2,3,4,5,6,7,8,9];
 let imgs = [ image1, image2, image3, image4, image5, image6, image7,
-    image8, image9, image10];
+    image8, image9, image10, image11, image12, image13, image14];
 
 function App() {
     let [selectedTable, setSelectedtable] = useState(0);
@@ -29,12 +33,9 @@ function App() {
     let [wrong, setWrong] = useState(0);
     let [index, setIndex] = useState(0);
 
-
-
-
     // set first number to practice multiplicaiton on
     const select = (e) => {
-        console.log("select");
+        //console.log("select");
         setSelectedtable(e.target.innerHTML)
         // select parent element
         let parent = e.target.parentElement
@@ -52,7 +53,7 @@ function App() {
     const getNum = () => {
         let num = Math.floor(Math.random() * (9 - 1) + 1);
         setSecondNumber(num);
-        console.log(num, " setting sec num");
+        //console.log(num, " setting sec num");
     }
 
     // set anser "guess" in state
@@ -64,12 +65,12 @@ function App() {
     // check math
     const check = (e) => {
         // add 5 second delay
-        console.log("check");
+        //console.log("check");
         let value = selectedTable * secondNumber
-        console.log(value, "value", guess, "guess");
+        //console.log(value, "value", guess, "guess");
 
         if (guess === value){
-            console.log("true");
+            //console.log("true");
             setScore(score+=1)
             setInput(input = '');
             getNum();
@@ -77,7 +78,6 @@ function App() {
             ansList.push([parseInt(selectedTable),"X",secondNumber, "=",guess])
             setAnsList(ansList)
         } else {
-            console.log("false");
             setInput(input = '');
             setWrong(wrong+=1)
         }
@@ -85,7 +85,6 @@ function App() {
 
     // change index to change backround image
     const next = (e) => {
-        console.log(index, imgs.length);
         let temp = index +1
         if (temp >= imgs.length){ temp = 0}
         setIndex(temp)
@@ -116,7 +115,11 @@ function App() {
             <div>X</div>
             <div>{secondNumber}</div>
             <div> = </div>
-            <input placeholder="quick maths" value={input} onChange={handleChange}></input>
+            <input placeholder="quick maths"
+                value={input}
+                name="answer"
+                onChange={handleChange}>
+            </input>
             <button type="submit"
                 onClick={check}
                 placeholder="Answer"
