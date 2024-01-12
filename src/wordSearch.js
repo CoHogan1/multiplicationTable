@@ -6,7 +6,7 @@ let wordList = ['one', 'two','three', 'tree', 'seven', 'ask', 'hungry',"bob",'fi
 
 // generate a board with selected words
 function generateCrosswordGrid(words) {
-  console.time('test')
+
   const gridSize = 10;
   const crosswordGrid = [];
   // Generate an empty grid
@@ -18,7 +18,7 @@ function generateCrosswordGrid(words) {
   for (const word of words) {
     placeWordInGrid(word, crosswordGrid);
   }
-  console.timeEnd('test')
+
   return crosswordGrid;
 }
 
