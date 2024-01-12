@@ -18,12 +18,12 @@ import image13 from "./backgrounds/spider.gif";
 import image14 from "./backgrounds/treeLake.gif";
 
 
-let tables = [1,2,3,4,5,6,7,8,9];
+let tables = [1,2,3,4,5,6,7,8,9,10,11,12];
 let imgs = [ image1, image2, image3, image4, image5, image6, image7,
     image8, image9, image10, image11, image12, image13, image14];
 
 function Multiply() {
-    let [selectedTable, setSelectedtable] = useState(0);
+    let [selectedTable, setSelectedtable] = useState(1);
     let [secondNumber, setSecondNumber] = useState(0);
     let [ansList, setAnsList] = useState([]);
     let [input, setInput] = useState('');
@@ -50,7 +50,7 @@ function Multiply() {
 
     // generate random number2 to practice
     const getNum = () => {
-        let num = Math.floor(Math.random() * (9 - 1) + 1);
+        let num = Math.floor(Math.random() * (13 - 1) + 1);
         setSecondNumber(num);
         //console.log(num, " setting sec num");
     }
@@ -115,6 +115,7 @@ function Multiply() {
             <div>{secondNumber}</div>
             <div> = </div>
             <input placeholder="quick maths"
+                type="number"
                 value={input}
                 name="answer"
                 onChange={handleChange}>

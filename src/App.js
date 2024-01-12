@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div className="Main" >
-        <WordSearch />
+        <Multiply />
     </div>
   );
 }
@@ -20,3 +20,4 @@ export default App;
 
 
     // <Multiply />
+    // <WordSearch />

@@ -6,8 +6,8 @@
   height: 100vh;
   background-size: cover;
 }
-/* main page */
 
+/* main page */
 .main {
     background-color: cyan;
     width: 100vw;
@@ -17,36 +17,39 @@
 
 
 /* multiply */
-
 .table-type{
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     margin: auto;
-    width: 80%;
+    width: 350px;
 
 }
 
 .table-number {
-    background-color: red;
+    background-color: cyan;
+    flex: 1 0 12%;
     width: 30px;
     height: 30px;
     line-height: 30px;
     border: 2px solid black;
-    margin: 30px 4px;
+    margin: 4px;
 
 }
 
 .selected {
-    background-color: green;
+    background-color: lightgreen;
+    flex: 1 0 12%;
     width: 30px;
     height: 30px;
     line-height: 30px;
-    border: 2px solid black;
-    margin: 30px 4px;
+    border: 2px solid white;
+    box-shadow: 0 0  6px white;
+    margin: 4px;
 }
 
 .equation{
-    background-color: lightgrey;
+    background-color: lightgreen;
     padding: 7px;
     border-radius: 15px;
     width: 80%;
@@ -60,11 +63,11 @@
 button {
     border-radius: 10px;
     padding: 4px 10px;
-    background: linear-gradient(45deg, green, lime, cyan);
+    background: linear-gradient(white, lightgreen, lime, lime, lime, green);
 }
 
 button:active {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 input {
@@ -78,7 +81,7 @@ input {
     border-radius: 10px;
     display: flex;
     justify-content: space-around;
-    background-color: darkgrey;
+    background-color: lightblue;
 }
 
 .answerList {
@@ -86,7 +89,7 @@ input {
     padding: 5px;
     border: 3px solid black;
     width: 50%;
-    height: 300px;
+    height: 250px;
     max-height: 300px;
     overflow-y: scroll;
     background-color: rgba(20,20,20, 0.5);
@@ -99,7 +102,7 @@ input {
 }
 
 .next {
-    background: rgba(200,200,200, 0.4);
+    background: rgba(200, 150, 150, 0.5);
     width: 100px;
     padding: 5px;
     margin: auto;
@@ -170,9 +173,9 @@ input {
 .guessMenu {
     margin: 10px auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 20px;
-    width: 70%;
+    width: 350px;
     height: 30px;
 }
 
