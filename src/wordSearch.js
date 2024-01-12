@@ -94,7 +94,7 @@ for (let i = 0; i < crosswordGrid.length; i++){
 
 function WordSearch() {
     let [guess, setGuess] = useState('');
-    let [input, setInput] = useState('');
+    //let [input, setInput] = useState('');
     let [score, setScore] = useState(0);
 
 

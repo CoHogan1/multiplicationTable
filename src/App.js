@@ -1,8 +1,9 @@
 
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
+//import React, { useState } from 'react';
 import Multiply from './multiply.js';
-import WordSearch from './wordSearch.js';
+//import WordSearch from './wordSearch.js';
 
 
 
