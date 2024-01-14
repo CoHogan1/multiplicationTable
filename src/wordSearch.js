@@ -1,79 +1,52 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 // test data
 let wordList = ['one', 'two','three', 'tree', 'seven', 'ask', 'hungry',"bob",'fish','seventeen']
 
-// generate a board with selected words
-function generateCrosswordGrid(words) {
+function fillWordSearchArray(words) {
+  const rows = 10;
+  const cols = 10;
 
-  const gridSize = 10;
-  const crosswordGrid = [];
-  // Generate an empty grid
-  for (let i = 0; i < gridSize; i++) {
-    const row = new Array(gridSize).fill('');
-    crosswordGrid.push(row);
-  }
-  // Place words in the grid
-  for (const word of words) {
-    placeWordInGrid(word, crosswordGrid);
-  }
+  // Create a 2D array filled with empty strings
+  const wordSearchArray = Array.from({ length: rows }, () => Array(cols).fill(''));
 
-  return crosswordGrid;
-}
+  // Iterate through each word and place it in the array
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
 
+    // Generate random starting coordinates
+    let row = Math.floor(Math.random() * rows);
+    let col = Math.floor(Math.random() * cols);
 
-function placeWordInGrid(word, grid) {
-  const gridSize = grid.length;
-  const direction = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+    // Determine whether to place the word horizontally or vertically
+    const horizontal = Math.random() < 0.5;
 
-  // Randomly choose a starting position
-  let startRow = Math.floor(Math.random() * gridSize);
-  let startCol = Math.floor(Math.random() * gridSize);
-
-  // Ensure the word fits in the chosen direction
-  while (!canPlaceWord(word, startRow, startCol, direction, grid)) {
-    startRow = Math.floor(Math.random() * gridSize);
-    startCol = Math.floor(Math.random() * gridSize);
-  }
-
-  // Place the word in the grid
-  for (let i = 0; i < word.length; i++) {
-    if (direction === 'horizontal') {
-      grid[startRow][startCol + i] = word[i];
-    } else {
-      grid[startRow + i][startCol] = word[i];
+    // Check if the word fits in the chosen direction
+    while (
+      (horizontal && col + word.length > cols) ||
+      (!horizontal && row + word.length > rows)
+    ) {
+      // Regenerate starting coordinates if the word doesn't fit
+      row = Math.floor(Math.random() * rows);
+      col = Math.floor(Math.random() * cols);
     }
-  }
-}
 
-function canPlaceWord(word, startRow, startCol, direction, grid) {
-  const gridSize = grid.length;
-
-  // Check if the word fits within the grid boundaries
-  if (
-    (direction === 'horizontal' && startCol + word.length > gridSize) ||
-    (direction === 'vertical' && startRow + word.length > gridSize)
-  ) {
-    return false;
-  }
-
-  // Check for collisions with existing letters in the grid
-  for (let i = 0; i < word.length; i++) {
-    const currentCell =
-      direction === 'horizontal'
-        ? grid[startRow][startCol + i]
-        : grid[startRow + i][startCol];
-
-    if (currentCell !== '' && currentCell !== word[i]) {
-      return false;
+    // Place the word in the array
+    for (let j = 0; j < word.length; j++) {
+      if (horizontal) {
+        wordSearchArray[row][col + j] = word[j];
+      } else {
+        wordSearchArray[row + j][col] = word[j];
+      }
     }
   }
 
-  return true;
+  return wordSearchArray;
 }
 
-const crosswordGrid = generateCrosswordGrid(wordList);
+// Example: Creating a word search array with given words
+const crosswordGrid = fillWordSearchArray(wordList);
 
 const generateRandomLetter = () => {
     // ASCII values for lowercase letters: 'a' is 97, 'z' is 122
@@ -96,25 +69,44 @@ function WordSearch() {
     let [guess, setGuess] = useState('');
     //let [input, setInput] = useState('');
     let [score, setScore] = useState(0);
+    //let [indexCheck, setIndexCheck] = useState('');
+
+    let prevInd = useRef('0,0');
+    let nextInd = useRef('');
 
 
     const clicked = (e) => {
+        // this doesnt work yet.....
         e.target.classList.toggle('clicked')
+        console.log(prevInd, nextInd, "1");
         // save guess' as a string
-        setGuess(guess += e.target.innerHTML)
-        // make sure guess keeps a pattern
+
+        let temp = e.target.id[0] + e.target.id[2] + ","
+        if (prevInd.length === 0){ prevInd = temp}
+        nextInd = temp;
+        if (prevInd[0] === temp[0] || prevInd[1] === temp[1]){
+            setGuess(guess += e.target.innerHTML)
+        }
+        console.log(prevInd, nextInd, "2");
+        prevInd = nextInd
+
+        // console.log(e.target.id)
+        // console.log(e.target.id[0],e.target.id[2]);
     }
 
     const guessWord = (e) => {
-        console.log('guess');
         console.log("guess, => ", guess );
+        // make sure array indexes are different
+        // make sure array indexes are clost to eachother.
+
         // check is guessed word is in word list
         let flag = false;
         for (let i = 0 ; i < wordList.length; i++){
             if (wordList[i] === guess){
                 flag = true
                 setScore(score+=1)
-            };
+                break;
+                };
         }
         if (flag){
             // mark word found
@@ -144,9 +136,11 @@ function WordSearch() {
 
             <div className="wordSearchBox">
                 {crosswordGrid.map((val,ind) => val.map((v,i) =>
-                    <div key={[ind,i]} className="searchLetter"
-                        onClick={clicked}
-                        >{crosswordGrid[ind][i]}</div>
+                    <div key={[ind,i]}
+                        id={`${ind}-${i}`}
+                         className="searchLetter"
+                         onClick={clicked}
+                    >{crosswordGrid[ind][i]}</div>
                  ))}
             </div>
         </div>

@@ -16,7 +16,7 @@
 
 .navigation {
     width: 100vw;
-    background-color: pink;
+    background-color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-around;

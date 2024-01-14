@@ -8,7 +8,7 @@ import LilianaMath from './liliMath.js'
 
 
 function App() {
-    let [index, setIndex] = useState(0);
+    let [index, setIndex] = useState(1);
 
     let viewArray = [<Multiply />, <WordSearch />, <LilianaMath />]
 
@@ -25,7 +25,7 @@ function App() {
             <div onClick={changeTheIndex} id="2">Liliana's Takeaways</div>
         </div>
         <div>{viewArray[index]}</div>
-        
+
     </div>
   );
 }
