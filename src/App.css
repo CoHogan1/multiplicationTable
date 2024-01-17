@@ -239,3 +239,24 @@ input {
     justify-content: space-around;
     background-color: lightblue;
 }
+
+
+.test {
+    margin: 50px auto;
+    width: 350px;
+    height: 350px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.temp {
+    flex: 1 0 7%; /* 10 units per row*/
+    width: 20px;
+    height:20px;
+    text-align: center;
+    background-color: white;
+    color: black;
+    margin: 5px;
+}

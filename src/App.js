@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Multiply from './multiply.js';
 import WordSearch from './wordSearch.js';
 import LilianaMath from './liliMath.js'
+import Test from './testWord.js'
 
 
 function App() {
@@ -19,12 +20,8 @@ function App() {
 
   return (
     <div className="Main" >
-        <div className="navigation">
-            <div onClick={changeTheIndex} id="0">Isaac Math</div>
-            <div onClick={changeTheIndex} id="1">Word Search</div>
-            <div onClick={changeTheIndex} id="2">Liliana's Takeaways</div>
-        </div>
-        <div>{viewArray[index]}</div>
+        <Test />
+
 
     </div>
   );
@@ -33,6 +30,10 @@ export default App;
 
 
 
-    // <Multiply />
-    // <WordSearch />
-    // <LilianaMath />
+
+// <div className="navigation">
+//     <div onClick={changeTheIndex} id="0">Isaac Math</div>
+//     <div onClick={changeTheIndex} id="1">Word Search</div>
+//     <div onClick={changeTheIndex} id="2">Liliana's Takeaways</div>
+// </div>
+// <div>{viewArray[index]}</div>

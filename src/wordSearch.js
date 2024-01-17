@@ -32,6 +32,8 @@ function fillWordSearchArray(words) {
       col = Math.floor(Math.random() * cols);
     }
 
+
+
     // Place the word in the array
     for (let j = 0; j < word.length; j++) {
       if (horizontal) {
@@ -78,7 +80,7 @@ function WordSearch() {
     const clicked = (e) => {
         // this doesnt work yet.....
         e.target.classList.toggle('clicked')
-        console.log(prevInd, nextInd, "1");
+        //console.log(prevInd, nextInd, "1");
         // save guess' as a string
 
         let temp = e.target.id[0] + e.target.id[2] + ","
