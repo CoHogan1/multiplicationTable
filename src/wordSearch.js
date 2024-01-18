@@ -2,68 +2,10 @@ import './App.css';
 import React, { useState, useRef } from 'react';
 
 // test data
-let wordList = ['one', 'two','three', 'tree', 'seven', 'ask', 'hungry',"bob",'fish','seventeen']
+let rows = 10, cols = 10;
+const wordSearchArray = Array.from({ length: rows }, () => Array(cols).fill('_'));
 
-function fillWordSearchArray(words) {
-  const rows = 10;
-  const cols = 10;
-
-  // Create a 2D array filled with empty strings
-  const wordSearchArray = Array.from({ length: rows }, () => Array(cols).fill(''));
-
-  // Iterate through each word and place it in the array
-  for (let i = 0; i < words.length; i++) {
-    const word = words[i];
-
-    // Generate random starting coordinates
-    let row = Math.floor(Math.random() * rows);
-    let col = Math.floor(Math.random() * cols);
-
-    // Determine whether to place the word horizontally or vertically
-    const horizontal = Math.random() < 0.5;
-
-    // Check if the word fits in the chosen direction
-    while (
-      (horizontal && col + word.length > cols) ||
-      (!horizontal && row + word.length > rows)
-    ) {
-      // Regenerate starting coordinates if the word doesn't fit
-      row = Math.floor(Math.random() * rows);
-      col = Math.floor(Math.random() * cols);
-    }
-
-
-
-    // Place the word in the array
-    for (let j = 0; j < word.length; j++) {
-      if (horizontal) {
-        wordSearchArray[row][col + j] = word[j];
-      } else {
-        wordSearchArray[row + j][col] = word[j];
-      }
-    }
-  }
-
-  return wordSearchArray;
-}
-
-// Example: Creating a word search array with given words
-const crosswordGrid = fillWordSearchArray(wordList);
-
-const generateRandomLetter = () => {
-    // ASCII values for lowercase letters: 'a' is 97, 'z' is 122
-    const randomCharCode = Math.floor(Math.random() * (122 - 97 + 1)) + 97;
-    const randomLetter = String.fromCharCode(randomCharCode);
-    return randomLetter;
-}
-
-for (let i = 0; i < crosswordGrid.length; i++){
-    for (let z = 0; z < crosswordGrid[i].length; z++){
-        if (crosswordGrid[i][z] === ""){
-            crosswordGrid[i][z] = generateRandomLetter();
-        }
-    }
-}
+let limit = 0
 
 //------------------------------------------------------------------------------
 
@@ -72,9 +14,117 @@ function WordSearch() {
     //let [input, setInput] = useState('');
     let [score, setScore] = useState(0);
     //let [indexCheck, setIndexCheck] = useState('');
-
     let prevInd = useRef('0,0');
     let nextInd = useRef('');
+    let wordList = ['one', 'two','three', 'tree', 'seven', 'ask', 'hungry',
+        "bob",'fish','seventeen']
+
+    const generateRandomLetter = () => {
+        // ASCII values for lowercase letters: 'a' is 97, 'z' is 122
+        const randomCharCode = Math.floor(Math.random() * (122 - 97 + 1)) + 97;
+        const randomLetter = String.fromCharCode(randomCharCode);
+        return randomLetter;
+    }
+
+    const generateIndex = () => {
+        let num = Math.floor(Math.random() * (8 - 1) + 1);
+        return num
+    }
+
+    const fillRandomLetters = () => {
+        // fill the non word spaces in the array with a letter
+        for (let i = 0; i < crosswordGrid.length; i++){
+            for (let z = 0; z < crosswordGrid[i].length; z++){
+                if (crosswordGrid[i][z] === "_"){
+                    crosswordGrid[i][z] = generateRandomLetter();
+                }
+            }
+        }
+    }
+
+    // populate the board with the specified letters.
+    const fill = (words, board) => {
+        console.time('start')
+
+        while(words.length > -1){
+            //console.table(board);
+            limit++
+            if (limit > 2000) break;
+            let word = words[words.length -1]
+            if (words.length === 0) break;
+
+            // pick a random index
+            let x = generateIndex()
+            let y = generateIndex()
+
+            // pick a direction, horizontal or vertical
+            let num = Math.floor(Math.random() > 0.5)
+
+            let availableLen = 10 - y;
+            let availableUp = 10 - x;
+
+            // check if there is room at current index for both directions
+            if (word.length > availableLen & word.length > availableUp){ continue }
+            // one of these are true, whiche one.
+
+            let up = true, over = true;
+            if (word.length > availableLen) over = false;
+            if (word.length > availableUp) up = false;
+
+
+            // check to see if there is available room for word, and check to see if no words exist in index
+            let lenFlag = true, heightFlag = true;
+            if (!word){ break };
+            for (let l = 0; l < word.length; l++){
+                if (over){
+                    // to right
+                    if (board[x][y + l] !== "_"){ lenFlag = false }
+                }
+                if (up){
+                    // verticle down
+                    if (board[x + l][y] !== '_'){ heightFlag = false }
+                }
+            }
+
+            // check if there is room for a word in both directions
+            if (lenFlag === false && heightFlag === false){ continue }
+
+
+            if (word.length > availableLen) continue;
+            // num == true => horizontal
+            if (num && lenFlag){
+                // if there is room in the array
+                if (availableLen >= word.length){
+                    // fill the word into the array.
+                    for (let g = 0; g < word.length; g++){
+                        board[x][y + g] = word[g];
+                    }
+                }
+                words.pop()
+            }
+            if (words.length === 0) break;
+
+            if (word.length > availableUp) continue;
+            // num == false => vert
+            if (!num && heightFlag){
+                // if there is room in the array
+                if (availableLen >= word.length){
+                    // fill the word into the array.
+                    for (let g = 0; g < word.length; g++){
+                        board[x+g][y] = word[g];
+                    }
+                }
+                words.pop()
+            }
+
+        }
+
+        console.timeEnd('start')
+        //console.log(limit);
+        return board
+    }
+    const crosswordGrid = fill(wordList, wordSearchArray);
+    fillRandomLetters();
 
 
     const clicked = (e) => {
@@ -122,6 +172,7 @@ function WordSearch() {
 
     return (
         <div className="wordSearch">
+        <div className="bg">
             <h1>Word Search</h1>
 
             <div className="wordBox">
@@ -145,6 +196,8 @@ function WordSearch() {
                     >{crosswordGrid[ind][i]}</div>
                  ))}
             </div>
+
+        </div>
         </div>
     )
 }
