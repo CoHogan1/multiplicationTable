@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react'; // ueRef
 
 // test data
 let rows = 10, cols = 10;
@@ -127,9 +127,9 @@ function WordSearch() {
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-const styleClicked = {
-    // val: 'setings',
-}
+// const styleClicked = {
+//     // val: 'setings',
+// }
 
 
     const clicked = (e) => {
@@ -154,7 +154,7 @@ const styleClicked = {
         // set flag, if true all conditions passed
         console.log(indexs);
         let inline = false;
-        let plumb = false;
+        //let plumb = false;
 
 
 
