@@ -14,8 +14,7 @@ function WordSearch() {
     //let [input, setInput] = useState('');
     let [score, setScore] = useState(0);
     //let [indexCheck, setIndexCheck] = useState('');
-    let prevInd = useRef('0,0');
-    let nextInd = useRef('');
+    let indexs = [];
     let wordList = ['one', 'two','three', 'tree', 'seven', 'ask', 'hungry',
         "bob",'fish','seventeen']
 
@@ -44,7 +43,7 @@ function WordSearch() {
 
     // populate the board with the specified letters.
     const fill = (words, board) => {
-        console.time('start')
+        //console.time('start')
 
         while(words.length > -1){
             //console.table(board);
@@ -119,35 +118,47 @@ function WordSearch() {
 
         }
 
-        console.timeEnd('start')
+        //console.timeEnd('start')
         //console.log(limit);
         return board
     }
     const crosswordGrid = fill(wordList, wordSearchArray);
     fillRandomLetters();
 
+// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+const styleClicked = {
+    // val: 'setings',
+}
+
 
     const clicked = (e) => {
-        // this doesnt work yet.....
+        // change the class so the item is highlighted
         e.target.classList.toggle('clicked')
-        //console.log(prevInd, nextInd, "1");
         // save guess' as a string
+        let temp = e.target.id[0] + e.target.id[2]
+        // add selected elements index to an array to be checked
+        // when guessWord function runs.
+        indexs.push(temp)
 
-        let temp = e.target.id[0] + e.target.id[2] + ","
-        if (prevInd.length === 0){ prevInd = temp}
-        nextInd = temp;
-        if (prevInd[0] === temp[0] || prevInd[1] === temp[1]){
-            setGuess(guess += e.target.innerHTML)
-        }
-        console.log(prevInd, nextInd, "2");
-        prevInd = nextInd
+        //setGuess(guess += e.target.innerHTML)
+
+
 
         // console.log(e.target.id)
         // console.log(e.target.id[0],e.target.id[2]);
     }
 
     const guessWord = (e) => {
-        console.log("guess, => ", guess );
+        console.log("guess");
+        // set flag, if true all conditions passed
+        console.log(indexs);
+        let inline = false;
+        let plumb = false;
+
+
+
+        if (inline){ console.log("hurray it worked")}
         // make sure array indexes are different
         // make sure array indexes are clost to eachother.
 
@@ -182,7 +193,7 @@ function WordSearch() {
             </div>
 
             <div className="guessMenu">
-                <p placeholder="guess a word" className="guessBar">{guess}</p>
+                <p className="guessBar">{guess}</p>
                 <button onClick={guessWord} className="guessButton">Guess</button>
                 <p className="score">{score}</p>
             </div>

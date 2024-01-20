@@ -76,7 +76,7 @@ button {
 }
 
 button:active {
-  transform: translateY(-4px);
+  transform: translateY(2px);
 }
 
 input {
@@ -118,15 +118,14 @@ input {
     color: white;
 }
 
-
 /*  word search */
 .bg {
-    background-color: rgba(0,100,200, 0.4);
+    background: rgba(30,0,80, 0.5);
     height: 100vh;
 }
 
 .wordSearch {
-    background: url('./backgrounds/clouds.gif');
+    background: url('./backgrounds/cool.webp');
     background-size: cover;
     width: 100vw;
     height: 100vh;
@@ -145,19 +144,27 @@ input {
     max-width: 360px;
     border: 1px solid black;
     border-radius: 35px;
-    background: linear-gradient(white, lightblue, lightblue);
+    background: linear-gradient(thistle 1%, violet 1%, blueviolet, blueviolet,blueviolet, indigo);
     box-shadow: 0 3px 0 rgba(0,0,0, 0.5);
-    padding: 10px;
+    padding: 7px 15px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap:  5px 15px;
     justify-content: space-around;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .word {
     height: 25px;
     line-height: 25px;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 2px 8px;
+    background: linear-gradient(white, lightgrey, lightgrey, lightgrey, lightgrey, grey);
+    box-shadow: 0 3px 0 rgba(0,0,0, 0.5);
+
 }
 
 /* word search game board */
@@ -169,11 +176,12 @@ input {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-around;
+    box-sizing: 0 3px 0 rgba(0,0,0, 0.5);
 }
 
 .searchLetter {
     flex-basis: 8%;
-    background: linear-gradient(white, lightblue, lightblue, lightblue, lightblue, lightskyblue);
+    background: linear-gradient(white, blueviolet, blueviolet, blueviolet);
     border: 1px solid black;
     border-radius: 35px;
     margin: 1px;
@@ -182,13 +190,15 @@ input {
     height: 20px;
     line-height: 20px;
     box-shadow: 0px 3px 0px rgba(0,0,0, 0.5);
+    color: thistle;
 }
 
 .clicked {
     flex-basis: 8%;
-    background: red;
+    background: linear-gradient(white, pink, pink, pink, pink, purple);
+    color: black;
     border: 1px solid black;
-    margin: 2px;
+    margin: 1px;
     width: 25px;
     height: 20px;
     line-height: 20px;
@@ -207,13 +217,16 @@ input {
     margin: auto;
     height: 20px;
     width: 200px;
-    background-color: white;
+    background-color: rgba(0,0,0, 0.1);
+    border-bottom: 2px solid black;
     overflow: hidden;
 }
 
 .guessButton{
     height: 25px;
     margin: auto;
+    background: linear-gradient(darkgrey, white, white, white);
+    box-shadow: 0 1px 0 black;
 }
 
 /* Lilianas MAth */

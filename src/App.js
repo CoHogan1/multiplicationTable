@@ -21,8 +21,6 @@ function App() {
   return (
     <div className="Main" >
         <WordSearch />
-
-
     </div>
   );
 }

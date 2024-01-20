@@ -115,7 +115,7 @@ const fill = (words, board) => {
 
 
 
-console.table(fill(wordList, wordSearchArray));
+//console.table(fill(wordList, wordSearchArray));
 
 
 
@@ -208,13 +208,28 @@ const fillBoard = (arr, list) => {
 
 //console.table(fillBoard(wordSearchArray, wordList))
 
+//  s s s   +1 +1 +1
+//+1 +1 +!  s s s
+
+
+const a = Array.from({ length: 10 }, () => Array(10).fill('_'));
+
+for (let b = 0; b < a.length; b++){
+    for (let c = 0; c < a[b].length; c++){
+        a[b][c] = `${b}.${c}`
+    }
+}
+
+
+//console.table(a);
+
 
 
 
 
 
 // while (wordList.length > 0){
-    // let word = wordList[wordList.length -1]
+    // let word = wordList[wordList.length -1]blueviolet,
 
     // loop through the array and find an index
     // pick a direction, vertical or horizontal
