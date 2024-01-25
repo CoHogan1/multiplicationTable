@@ -130,35 +130,70 @@ function WordSearch() {
 // const styleClicked = {
 //     // val: 'setings',
 // }
+    let longShot = []
 
 
     const clicked = (e) => {
         // change the class so the item is highlighted
         e.target.classList.toggle('clicked')
-        // save guess' as a string
+        // lol idk
+        longShot.push(e.target)
+        // save guess' index as a string
         let temp = e.target.id[0] + e.target.id[2]
-        // add selected elements index to an array to be checked
-        // when guessWord function runs.
+        // save indexs to a var to be checked for validity
         indexs.push(temp)
-
-        //setGuess(guess += e.target.innerHTML)
-
-
-
-        // console.log(e.target.id)
         // console.log(e.target.id[0],e.target.id[2]);
     }
 
+    // set all classes of the elements in array to a class.
+    // const setClasses = (arr, nameClass) => {
+    //     for (let i = 0; i < arr.length; i++){
+    //         arr[i].classList.toggle(nameClass)
+    //     }
+    // }
+
     const guessWord = (e) => {
+        // ['00', '01', '02'] horiz
+        // ['00', '10', '20'] vert
         console.log("guess");
-        // set flag, if true all conditions passed
-        console.log(indexs);
-        let inline = false;
-        //let plumb = false;
+        //console.log(indexs);
+        let inline = true;
+        let plumb = true;
+
+        // console.log(longShot, this works)
+        // // lol it worked!
+        // for (let i = 0; i < longShot.length; i++){
+        //     longShot[i].classList.toggle('correct')
+        // }
+
+        // check indexes to ensure the selected elements are in a row.
+        for (let i = 0; i < indexs.length -1; i++){
+            // set up logic here to check inline and plumb at the same time.
+            let temp = indexs[i].split('');
+            let nextTemp = indexs[i+1].split('');
+
+            if (temp[0] !== nextTemp[0]){
+                inline = false;
+                setGuess("Try Again :(")
+                // set classes back....
+                }
+            if (parseInt(temp[1]) !==(nextTemp[1] -1)) {
+                inline = false;
+                setGuess("Try Again :(")
+                // set classes back....
+            }
+
+            // checks for plumb
+
+        }
+
+        indexs = [];
+        console.log(plumb, " <==");
 
 
-
-        if (inline){ console.log("hurray it worked")}
+        //console.log(inline, " <= inline");
+        if (inline) { console.log("hurray it worked")}
+        if (!inline){ console.log("not inline")}
         // make sure array indexes are different
         // make sure array indexes are clost to eachother.
 
@@ -176,7 +211,6 @@ function WordSearch() {
             //highlight word permanantly
             setGuess(''); // clear guess field
         }
-
         // clear guess
     }
 

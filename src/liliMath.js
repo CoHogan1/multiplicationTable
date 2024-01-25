@@ -1,10 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
 
-import img1 from './backgrounds/flowers.gif'
-import img2 from './backgrounds/landscape.gif'
-import img3 from './backgrounds/purpleFlower.gif'
-
 
 
 function LilianaMath(){
@@ -13,8 +9,8 @@ function LilianaMath(){
     let [answer, setAnswer] = useState('');
     let [right, setRight] = useState(0);
     let [wrong, setWrong] = useState(0);
-    let [index, setIndex] = useState(0);
-    let imgs = [img1, img2, img3];
+    // let [index, setIndex] = useState(0);
+    //let imgs = [img1, img2, img3];
 
     const generateRandomNumber = () => {
         // generate a random single digit number to practice subtraction
@@ -54,22 +50,22 @@ function LilianaMath(){
 
 
     // change index to change backround image
-    const next = (e) => {
-        let temp = index +1
-        if (temp >= imgs.length){ temp = 0}
-        setIndex(temp)
-    }
+    // const next = (e) => {
+    //     let temp = index +1
+    //     if (temp >= imgs.length){ temp = 0}
+    //     setIndex(temp)
+    // }
 
-    const backgroundImageStyle = {
-        backgroundImage: `url(${imgs[index]})`,
-        backgroundSize: 'cover',
-        backgroundPositionX: 'center',
-        backgroundPositionY: 'center',
-    }
+    // const backgroundImageStyle = {
+    //     backgroundImage: `url(${imgs[index]})`,
+    //     backgroundSize: 'cover',
+    //     backgroundPositionX: 'center',
+    //     backgroundPositionY: 'center',
+    // }
 
     return(
-        <div className="liliMath" style={backgroundImageStyle}>
-            <h2 onClick={next}>Liliana's Math Practice</h2>
+        <div className="liliMath">
+            <h2>Liliana's Math Practice</h2>
 
             <div className="subtraction">
                 <div>{first}</div>

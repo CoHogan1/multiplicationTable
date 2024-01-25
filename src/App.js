@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="Main" >
         <div className="navigation">
-            <div onClick={changeTheIndex} id="0">Isaac Math</div>
+            <div onClick={changeTheIndex} id="0" className="isaac">Isaac Math</div>
             <div onClick={changeTheIndex} id="1">Word Search</div>
             <div onClick={changeTheIndex} id="2">Liliana's Takeaways</div>
         </div>
@@ -30,6 +30,8 @@ function App() {
   );
 }
 export default App;
+
+
 
 // <Wordsearch />
 

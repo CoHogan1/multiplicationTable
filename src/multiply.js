@@ -2,25 +2,19 @@ import './App.css';
 import React, { useState } from 'react';
 
 // images
-import image1 from "./backgrounds/bg1.gif";
-import image2 from "./backgrounds/christmas.gif";
-import image3 from "./backgrounds/christmas2.gif";
-import image4 from "./backgrounds/gumball.gif";
-import image5 from "./backgrounds/minecraftFox.gif";
-import image6 from "./backgrounds/minecraftFox.webp";
-import image7 from "./backgrounds/minecraftLava.gif";
-import image8 from "./backgrounds/space.gif";
-import image9  from "./backgrounds/ttd1.gif";
-import image10 from "./backgrounds/ttd2.gif";
-import image11 from "./backgrounds/mkinecraftAxol.gif";
-import image12 from "./backgrounds/picoPark.gif";
-import image13 from "./backgrounds/spider.gif";
-import image14 from "./backgrounds/treeLake.gif";
-
+import pickaxe from './backgrounds/nPickaxeE.webp';
+//import ice from './backgrounds/iceBiome.webp';
+import desert from './backgrounds/dessert.png';
+//import bad from './backgrounds/badLands.png';
 
 let tables = [1,2,3,4,5,6,7,8,9,10,11,12];
-let imgs = [ image1, image2, image3, image4, image5, image6, image7,
-    image8, image9, image10, image11, image12, image13, image14];
+//let imgs = [desert, bad];
+// let index = Math.floor(Math.random() * imgs.length);
+// console.log(index);
+
+let imgs = [desert]
+
+
 
 function Multiply() {
     let [selectedTable, setSelectedtable] = useState(1);
@@ -30,7 +24,6 @@ function Multiply() {
     let [guess, setGuess] = useState(0);
     let [score, setScore] = useState(0);
     let [wrong, setWrong] = useState(0);
-    let [index, setIndex] = useState(0);
 
     // set first number to practice multiplicaiton on
     const select = (e) => {
@@ -82,25 +75,9 @@ function Multiply() {
         }
     }
 
-    // change index to change backround image
-    const next = (e) => {
-        let temp = index +1
-        if (temp >= imgs.length){ temp = 0}
-        setIndex(temp)
-    }
-
-    const backgroundImageStyle = {
-        backgroundImage: `url(${imgs[index]})`,
-        backgroundSize: 'cover',
-        backgroundPositionX: 'center',
-        backgroundPositionY: 'center',
-    }
-
   return (
-    <div className="App" style={backgroundImageStyle}>
-        {/*}<div>debug: {selectedTable}, {secondNumber}, {guess}</div>*/}
-        <div className="next" onClick={next}>Background</div>
-
+    <div className="App">
+    <div className="second" style={{ backgroundImage: `url(${imgs[0]})`}}>
         <div className="table-type">
             {tables.map((a,b) => <div
                 className="table-number"
@@ -120,22 +97,21 @@ function Multiply() {
                 name="answer"
                 onChange={handleChange}>
             </input>
-            <button type="submit"
-                onClick={check}
-                placeholder="Answer"
-                >Answer</button>
+            <img className="submit" alt="pickaxe" src={pickaxe}
+                onClick={check}>
+            </img>
         </div>
 
         <div className="scores">
-            <div style={{color: "green"}}>Yes:  {score}</div>
-            <div style={{color: "red"}}>Not yes:  {wrong}</div>
+            <div >Yes:  {score}</div>
+            <div >Not yes:  {wrong}</div>
         </div>
 
         <div className="answerList">
             {ansList.map((a,b) => <div key={b} className="listItem">{a} :)</div>)}
-             {/* add correct answer data here */}
-        </div>
 
+        </div>
+    </div>
     </div>
   );
 }
