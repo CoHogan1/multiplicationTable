@@ -1,11 +1,9 @@
 
 @keyframes shake {
-  0%   { background-position: -440px -130px; }
-  50% { background-position: -820px -130px; }
-  100% { background-position: -440px -130px; }
+  0%   { background-position: -200px -130px; }
+  50% { background-position: -1400px -130px; }
+  100% { background-position: -200px -130px; }
 }
-
-
 
 .App {
   text-align: center;
@@ -18,34 +16,30 @@
 .second {
     width: 100vw;
     height: 100vh;
-    /* background-image: url('./backgrounds/dessert.png'); */
+    background-image: url('./backgrounds/dessert.png');
     background-position: center;
-    animation: shake 40s;
-    animation-iteration-count: infinite;
+    margin-top: 25px;
+    /* animation: shake 60s;
+    animation-iteration-count: infinite; */
 }
 
 /* main page */
-.main {
-    background-color: cyan;
+/* .main {
     width: 100vw;
     height: 100vh;
-}
+} */
 
 .navigation {
     width: 100vw;
-    background-color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-}
-.isaac{
-    background: green;
-    width: 33%;
-    text-align: center;
+    color: white;
 }
 
-
-
+.spacer{
+    height: 15px;
+}
 
 /* multiply */
 .table-type{
@@ -53,13 +47,14 @@
     flex-wrap: wrap;
     justify-content: space-around;
     margin: auto;
+    margin-top: 20px;
     width: 350px;
-
 }
 
 .table-number {
     background-image: url('./backgrounds/diamond.jpeg');
-    background-size:contain;
+    background-position: center;
+    background-size: 50px;
     flex: 1 0 12%;
     width: 30px;
     height: 30px;
@@ -157,9 +152,10 @@ input {
 }
 
 .listItem {
-    padding: 1px;
+    margin: 2px;
+    padding: 4px;
     border-bottom: 1px solid black;
-    background-color: white;
+    color: white;
 }
 
 .next {

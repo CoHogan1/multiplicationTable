@@ -1,20 +1,15 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 
 // images
 import pickaxe from './backgrounds/nPickaxeE.webp';
 //import ice from './backgrounds/iceBiome.webp';
 import desert from './backgrounds/dessert.png';
 //import bad from './backgrounds/badLands.png';
+import end from './backgrounds/endPortal.gif';
 
 let tables = [1,2,3,4,5,6,7,8,9,10,11,12];
-//let imgs = [desert, bad];
-// let index = Math.floor(Math.random() * imgs.length);
-// console.log(index);
-
 let imgs = [desert]
-
-
 
 function Multiply() {
     let [selectedTable, setSelectedtable] = useState(1);
@@ -75,9 +70,15 @@ function Multiply() {
         }
     }
 
+    const backgroundImageStyle = {
+        backgroundImage: `url(${end})`,
+        backgroundSize: 'cover',
+    }
+
   return (
     <div className="App">
     <div className="second" style={{ backgroundImage: `url(${imgs[0]})`}}>
+        <div className="spacer"></div>
         <div className="table-type">
             {tables.map((a,b) => <div
                 className="table-number"
@@ -108,7 +109,10 @@ function Multiply() {
         </div>
 
         <div className="answerList">
-            {ansList.map((a,b) => <div key={b} className="listItem">{a} :)</div>)}
+            {ansList.map((a,b) => <div key={b} className="listItem"
+            style={backgroundImageStyle}
+
+            >{a} :)</div>)}
 
         </div>
     </div>

@@ -22,10 +22,9 @@ function App() {
         <div className="navigation">
             <div onClick={changeTheIndex} id="0" className="isaac">Isaac Math</div>
             <div onClick={changeTheIndex} id="1">Word Search</div>
-            <div onClick={changeTheIndex} id="2">Liliana's Takeaways</div>
+            <div onClick={changeTheIndex} id="2">Liliana Math</div>
         </div>
-        <div>{viewArray[index]}</div>
-
+        <div className="App">{viewArray[index]}</div>
     </div>
   );
 }

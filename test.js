@@ -414,22 +414,3 @@ for (let b = 0; b < a.length; b++){
 //     }
 //     return arr
 // }
-
-
-let imgs = [1,2,3];
-
-
-let mem = {};
-
-for (let i = 0; i < 100; i++){
-    let index = Math.floor(Math.random() * imgs.length);
-    if (mem[index]){
-        mem[index]++
-    } else {
-        mem[index] = 1
-    }
-
-
-}
-
-console.log(mem);
