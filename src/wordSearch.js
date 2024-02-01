@@ -14,9 +14,9 @@ function WordSearch() {
     //let [input, setInput] = useState('');
     let [score, setScore] = useState(0);
     //let [indexCheck, setIndexCheck] = useState('');
-    let indexs = [];
-    let wordList = ['one', 'two','three', 'tree', 'seven', 'ask', 'hungry',
-        "bob",'fish','seventeen']
+    let wordList = ['all','call','fall','ball','tall','small','walk','talk',
+    'chalk','baseball','rainfall','sidewalk','cornstalk','your','from']
+
 
     const generateRandomLetter = () => {
         // ASCII values for lowercase letters: 'a' is 97, 'z' is 122
@@ -127,22 +127,37 @@ function WordSearch() {
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-// const styleClicked = {
-//     // val: 'setings',
-// }
-    let longShot = []
+    let [longShot, setLongShot] = useState([]); // wouldnt work otherwise
+    let [values, setValues] = useState([]);
 
 
     const clicked = (e) => {
+
+        if (e.target.className === "searchLetter clicked"){
+            // remove last val of value array, and last letter of guess
+            let arr = [...values]
+            arr.pop();
+            setValues(arr);
+            setGuess(guess.replace(/.$/,''))
+            e.target.classList.toggle('clicked')
+            let edited = longShot.slice(0, -1);
+            setLongShot(edited)
+            return;
+        }
+
         // change the class so the item is highlighted
         e.target.classList.toggle('clicked')
         // lol idk
-        longShot.push(e.target)
+        let val = e.target
+        longShot.push(val)
         // save guess' index as a string
         let temp = e.target.id[0] + e.target.id[2]
         // save indexs to a var to be checked for validity
-        indexs.push(temp)
+        let arr = [...values]
+        arr.push(temp);
+        setValues(arr);
         // console.log(e.target.id[0],e.target.id[2]);
+        setGuess(guess += e.target.innerHTML)
     }
 
     // set all classes of the elements in array to a class.
@@ -152,74 +167,116 @@ function WordSearch() {
     //     }
     // }
 
-    const guessWord = (e) => {
-        // ['00', '01', '02'] horiz
-        // ['00', '10', '20'] vert
-        console.log("guess");
-        //console.log(indexs);
-        let inline = true;
-        let plumb = true;
+    const highlightWord = (arr) => {
+        for (let i = 0; i < arr.length; i++){
+            arr[i].classList.toggle('correct');
+        }
+        return;
+    }
 
-        // console.log(longShot, this works)
-        // // lol it worked!
-        // for (let i = 0; i < longShot.length; i++){
-        //     longShot[i].classList.toggle('correct')
-        // }
+    // const clearClasses = (arr) => {
+    //     // change classes of the word back to normal classes
+    //     console.log("clear classes run");
+    //     for (let i = 0; i < arr.length; i++){
+    //         arr[i].classList.toggle('searchLetter');
+    //     }
+    //     longShot = []
+    //     return;
+    // }
+
+    const scratchWordOut = (word) => {
+        let val = document.querySelector('.wordBox')
+        let nodes = val.childNodes
+        for (let i = 0 ; i < nodes.length; i++){
+            if (nodes[i].innerHTML === word){
+                nodes[i].classList.toggle('new')
+            }
+        }
+        return;
+    }
+
+    const guessWord = (e) => {
+        // see if the word is in the word array
+        if (wordList.includes(guess)){
+            // set classes back
+            //cleat val arr
+            //clear guess
+            console.log("its included");
+        }
+        // check for corrrect index placement of words
+        let row = true;
+        let row2 = true;
+        let plumb = true;
+        let plumb2 = true;
 
         // check indexes to ensure the selected elements are in a row.
-        for (let i = 0; i < indexs.length -1; i++){
-            // set up logic here to check inline and plumb at the same time.
-            let temp = indexs[i].split('');
-            let nextTemp = indexs[i+1].split('');
-
+        for (let i = 0; i < values.length -1; i++){
+            let temp = values[i].split('');
+            let nextTemp = values[i+1].split('');
             if (temp[0] !== nextTemp[0]){
-                inline = false;
-                setGuess("Try Again :(")
+                row = false;
+                //setGuess("Try Again :(")
+                //clearClasses(longShot)
                 // set classes back....
                 }
             if (parseInt(temp[1]) !==(nextTemp[1] -1)) {
-                inline = false;
-                setGuess("Try Again :(")
+                row2 = false;
+                //setGuess("Try Again :(")
                 // set classes back....
+                //clearClasses(longShot)
+            }
+        }
+
+        for (let j = 0; j < values.length -1; j++){
+            let first = values[j].split('');
+            let second = values[j+1].split('');
+            let val = second[0] -1
+
+            if (first[0] !== val){
+                plumb = false;
             }
 
-            // checks for plumb
+            if (first[1] !== second[1]){
+                plumb2 = false;
+            }
 
         }
 
-        indexs = [];
-        console.log(plumb, " <==");
-
-
-        //console.log(inline, " <= inline");
-        if (inline) { console.log("hurray it worked")}
-        if (!inline){ console.log("not inline")}
-        // make sure array indexes are different
-        // make sure array indexes are clost to eachother.
-
-        // check is guessed word is in word list
-        let flag = false;
-        for (let i = 0 ; i < wordList.length; i++){
-            if (wordList[i] === guess){
-                flag = true
-                setScore(score+=1)
-                break;
-                };
+        // console.log(plumb, plumb2, "plumb");
+        // console.log(row, row2,'row');
+        if (row && row2){
+            console.log("should highilight row");
+            let plusScore = score +1
+            highlightWord(longShot);
+            setLongShot([]);
+            setScore(plusScore);
+            scratchWordOut(guess);
+            setGuess('')
+            setValues([]);
         }
-        if (flag){
-            // mark word found
-            //highlight word permanantly
-            setGuess(''); // clear guess field
+
+        if (plumb && plumb2){
+            console.log(" should highlight column");
+            let plusScore = score +1
+            highlightWord(longShot)
+            setLongShot([]);
+            scratchWordOut(guess);
+            setGuess('')
+            setScore(plusScore)
+            setValues([]);
         }
-        // clear guess
+        if (score >= wordList.length){
+            console.log("reload game is won");
+            window.location.reload(false);
+        }
+        // check if all words are found.
+
     }
 
 
     return (
         <div className="wordSearch">
         <div className="bg">
-            <h1>Word Search</h1>
-
             <div className="wordBox">
                 {wordList.map((word, ind) =>
                     <p key={ind} className="word">{word}</p>
