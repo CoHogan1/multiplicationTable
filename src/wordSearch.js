@@ -174,15 +174,15 @@ function WordSearch() {
         return;
     }
 
-    // const clearClasses = (arr) => {
-    //     // change classes of the word back to normal classes
-    //     console.log("clear classes run");
-    //     for (let i = 0; i < arr.length; i++){
-    //         arr[i].classList.toggle('searchLetter');
-    //     }
-    //     longShot = []
-    //     return;
-    // }
+    const clearClasses = (arr) => {
+        // change classes of the word back to normal classes
+        console.log(arr);
+        for (let i = 0; i < arr.length; i++){
+            arr[i].classList.replace('clicked', 'searchLetter');
+        }
+        longShot = []
+        return;
+    }
 
     const scratchWordOut = (word) => {
         let val = document.querySelector('.wordBox')
@@ -201,7 +201,7 @@ function WordSearch() {
             // set classes back
             //cleat val arr
             //clear guess
-            console.log("its included");
+            //console.log("its included");
         }
         // check for corrrect index placement of words
         let row = true;
@@ -245,7 +245,6 @@ function WordSearch() {
         // console.log(plumb, plumb2, "plumb");
         // console.log(row, row2,'row');
         if (row && row2){
-            console.log("should highilight row");
             let plusScore = score +1
             highlightWord(longShot);
             setLongShot([]);
@@ -256,7 +255,6 @@ function WordSearch() {
         }
 
         if (plumb && plumb2){
-            console.log(" should highlight column");
             let plusScore = score +1
             highlightWord(longShot)
             setLongShot([]);
@@ -273,10 +271,19 @@ function WordSearch() {
 
     }
 
+    const clearSelection = () => {
+        clearClasses(longShot)
+        setGuess('')
+        setValues([]);
+        setLongShot([]);
+
+    }
+
 
     return (
         <div className="wordSearch">
         <div className="bg">
+            <div className="spacer"></div>
             <div className="wordBox">
                 {wordList.map((word, ind) =>
                     <p key={ind} className="word">{word}</p>
@@ -284,6 +291,7 @@ function WordSearch() {
             </div>
 
             <div className="guessMenu">
+                <button onClick={clearSelection} className="clear">X</button>
                 <p className="guessBar">{guess}</p>
                 <button onClick={guessWord} className="guessButton">Guess</button>
                 <p className="score">{score}</p>
