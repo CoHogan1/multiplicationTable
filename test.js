@@ -414,3 +414,17 @@ for (let b = 0; b < a.length; b++){
 //     }
 //     return arr
 // }
+
+
+let x = 0;
+console.log("running");
+
+
+while (x <= 10){
+    x++
+    if (x === 5){ continue }
+    console.log(x);
+    if (x > 10) break;
+};
+
+console.log("lol");

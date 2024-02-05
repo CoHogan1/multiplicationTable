@@ -300,7 +300,7 @@ input {
 .guessBar {
     margin: auto;
     height: 20px;
-    width: 180px;
+    width: 100px;
     background-color: rgba(0,0,0, 0.1);
     border-bottom: 2px solid black;
     overflow: hidden;

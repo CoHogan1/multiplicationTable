@@ -40,6 +40,7 @@ function WordSearch() {
             }
         }
     }
+    let num;
 
     // populate the board with the specified letters.
     const fill = (words, board) => {
@@ -57,7 +58,7 @@ function WordSearch() {
             let y = generateIndex()
 
             // pick a direction, horizontal or vertical
-            let num = Math.floor(Math.random() > 0.5)
+            num = num ? false: true;
 
             let availableLen = 10 - y;
             let availableUp = 10 - x;
@@ -123,7 +124,7 @@ function WordSearch() {
         return board
     }
     const crosswordGrid = fill(wordList, wordSearchArray);
-    fillRandomLetters();
+    //fillRandomLetters();
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -132,9 +133,9 @@ function WordSearch() {
 
 
     const clicked = (e) => {
-
         if (e.target.className === "searchLetter clicked"){
             // remove last val of value array, and last letter of guess
+            console.log("not in list");
             let arr = [...values]
             arr.pop();
             setValues(arr);
@@ -144,6 +145,7 @@ function WordSearch() {
             setLongShot(edited)
             return;
         }
+
 
         // change the class so the item is highlighted
         e.target.classList.toggle('clicked')
@@ -176,7 +178,6 @@ function WordSearch() {
 
     const clearClasses = (arr) => {
         // change classes of the word back to normal classes
-        console.log(arr);
         for (let i = 0; i < arr.length; i++){
             arr[i].classList.replace('clicked', 'searchLetter');
         }
@@ -197,11 +198,12 @@ function WordSearch() {
 
     const guessWord = (e) => {
         // see if the word is in the word array
-        if (wordList.includes(guess)){
-            // set classes back
-            //cleat val arr
-            //clear guess
-            //console.log("its included");
+        if (!wordList.includes(guess)){
+            console.log("word not in list");
+            clearClasses(longShot);
+            setLongShot([]);
+            setGuess('');
+            setValues([]);
         }
         // check for corrrect index placement of words
         let row = true;
@@ -215,15 +217,9 @@ function WordSearch() {
             let nextTemp = values[i+1].split('');
             if (temp[0] !== nextTemp[0]){
                 row = false;
-                //setGuess("Try Again :(")
-                //clearClasses(longShot)
-                // set classes back....
                 }
             if (parseInt(temp[1]) !==(nextTemp[1] -1)) {
                 row2 = false;
-                //setGuess("Try Again :(")
-                // set classes back....
-                //clearClasses(longShot)
             }
         }
 
@@ -232,7 +228,8 @@ function WordSearch() {
             let second = values[j+1].split('');
             let val = second[0] -1
 
-            if (first[0] !== val){
+
+            if (first[0] !== `${val}`){
                 plumb = false;
             }
 
@@ -242,7 +239,7 @@ function WordSearch() {
 
         }
 
-        // console.log(plumb, plumb2, "plumb");
+        //console.log(plumb, plumb2, "plumb");
         // console.log(row, row2,'row');
         if (row && row2){
             let plusScore = score +1
@@ -267,6 +264,10 @@ function WordSearch() {
             console.log("reload game is won");
             window.location.reload(false);
         }
+        clearClasses(longShot);
+        setLongShot([]);
+        setGuess('');
+        setValues([]);
         // check if all words are found.
 
     }
@@ -294,7 +295,6 @@ function WordSearch() {
                 <button onClick={clearSelection} className="clear">X</button>
                 <p className="guessBar">{guess}</p>
                 <button onClick={guessWord} className="guessButton">Guess</button>
-                <p className="score">{score}</p>
             </div>
 
             <div className="wordSearchBox">
