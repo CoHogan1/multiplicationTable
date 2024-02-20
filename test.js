@@ -1,430 +1,89 @@
-const generateRandomNum = () => {
-    //let num = Math.floor(Math.random() * (11 - 0) + 0);
-    let num = Math.floor(Math.random() > 0.5)
-    return num // favors  > 0.5
-}
-
-let memo = {}
-
-for (let i = 0; i < 10000; i++){
-    let number = generateRandomNum();
-    if (memo[number]){
-        memo[number]++
-    } else {
-        memo[number] = 1;
-    }
-}
-//console.log(memo);
-
-let rows = 10, cols = 10;
-const wordSearchArray = Array.from({ length: rows }, () => Array(cols).fill('_'));
-let wordList = ['aaa','bbb','cccc','ddddd','eeee','fff','gggg','hhhhhhhhh'];
-
-
-const generateIndex = () => {
-    let num = Math.floor(Math.random() * (8 - 1) + 1);
-    return num
-}
-
+let rows = 12, cols = 12;
+let wordSearchArray = Array.from({ length: rows }, () => Array(cols).fill('_'));
 
 let limit = 0
 
+let wordList = ['all','call','fall','ball','tall','small','walk','talk',
+'chalk','baseball','rainfall','sidewalk','cornstalk','your','from']
 
-const fill = (words, board) => {
-    console.time('start')
+console.table(wordSearchArray);
 
-    while(words.length > -1){
-        console.table(board);
-        limit++
-        if (limit > 2000) break;
-        let word = words[words.length -1]
-        if (words.length === 0) break;
-
-        // pick a random index
-        let x = generateIndex()
-        let y = generateIndex()
-
-        // pick a direction, horizontal or vertical
-        let num = Math.floor(Math.random() > 0.5)
-
-        let availableLen = 10 - y;
-        let availableUp = 10 - x;
-
-        // check if there is room at current index for both directions
-        if (word.length > availableLen & word.length > availableUp){ continue }
-        // one of these are true, whiche one.
-
-        let up = true, over = true;
-        if (word.length > availableLen) over = false;
-        if (word.length > availableUp) up = false;
-
-
-        // check to see if there is available room for word, and check to see if no words exist in index
-        let lenFlag = true, heightFlag = true;
-        if (!word){ break };
-        for (let l = 0; l < word.length; l++){
-            if (over){
-                // to right
-                if (board[x][y + l] !== "_"){ lenFlag = false }
-            }
-            if (up){
-                // verticle down
-                if (board[x + l][y] !== '_'){ heightFlag = false }
-            }
-        }
-
-        // check if there is room for a word in both directions
-        if (lenFlag === false && heightFlag === false){ continue }
-
-
-        if (word.length > availableLen) continue;
-        // num == true => horizontal
-        if (num && lenFlag){
-            // if there is room in the array
-            if (availableLen >= word.length){
-                // fill the word into the array.
-                for (let g = 0; g < word.length; g++){
-                    board[x][y + g] = word[g];
-                }
-            }
-            words.pop()
-        }
-        if (words.length === 0) break;
-
-        if (word.length > availableUp) continue;
-        // num == false => vert
-        if (!num && heightFlag){
-            // if there is room in the array
-            if (availableLen >= word.length){
-                // fill the word into the array.
-                for (let g = 0; g < word.length; g++){
-                    board[x+g][y] = word[g];
-                }
-            }
-            words.pop()
-        }
-
+const checkRow = (board, index, word) => {
+    // needs testing
+    let space = board.length - word.length;
+    if (space < word.length) return false;
+    let flag = true;
+    for (let i = index[1]; i < board.length; i++){
+        if (board[index[0][i]] !== "_") flag = false;
     }
+    return flag;
+}
 
-    console.timeEnd('start')
-    console.log(limit);
-    return board
+const checkCol = (board, index, word) => {
+    // needs testing
+    let space = board.length - word.length;
+    if (space < word.length) return false;
+    let flag = true;
+    for (let i = index[0]; i < board.length; i++){
+        if (board[index[i][1]] !== "_") flag = false;
+    }
+    return flag;
+}
+
+
+
+const findeIndexRow = (arr, wurd) => {
+    for (let a = 0; a < arr.length; a++){
+        for(let b = 0; b < arr.length; b++){
+            // skip some indexes to spread out words
+            if (Math.random() > 0.5) continue;
+            // if index is occupied, skip iteration
+            if (arr[a][b] !== "_"){ continue }
+            let rowClear = checkRow(arr, `${a}${b}`, wurd);
+            if (!rowClear) continue;
+            return `${a}${b}`
+        }
+    }
+    return false;
+}
+
+const findeIndexCol = (arr, wurd) => {
+    for (let a = 0; a < arr.length; a++){
+        for(let b = 0; b < arr.length; b++){
+            // skip some indexes to spread out words
+            if (Math.random() > 0.5) continue;
+            // if index is occupied, skip iteration
+            if (arr[a][b] !== "_"){ continue }
+            let colClear = checkCol(arr, `${a}${b}`, wurd);
+            if (!colClear) continue;
+            return `${a}${b}`
+        }
+    }
+    return false;
 }
 
 
 
 
+const populate = (board, words) => {
 
-//console.table(fill(wordList, wordSearchArray));
+    for (let i = 0; i < words.length; i++){
+        let word = words[i];
 
+        // find an index
+        let column = findeIndexCol(board, word);
+        let row = findeIndexRow(board,word);
+        // let x = string[0];
+        // let y = string[1];
 
-
-
-
-
-
-
-
-
-//console.table(wordSearchArray);
-let count = 0
-const fillBoard = (arr, list) => {
-    console.time('start')
-    while (list.length > -1){
-        count++
-        if(count > 2000){ break };
-    //     let word = list[list.length -1]
-    //     //console.log(word, " word ");
-    //     if (word === undefined) break;
-
-        //let i = 0, z = 0;
+        // place word
 
 
-        for (let i = 0; i < list.length; i++){
-            let word = list[list.length - 1]
-            for (let z = 0; z < arr[i].length; z++){
-                // if space is , "occupied, go to next index
-                if(arr[i][z] !== "_") { continue }
-
-                //dont check every index, spread it out a bit to space the words
-                if (Math.random() > 0.3){ continue }
-
-                //chose vert or horizontal direction to place word
-                let num = Math.floor(Math.random() > 0.5)
-
-                // length of the index to the end of the array
-                let availableLen = 9 - z;
-                let availableHeight = 9 - i;
-
-                //
-                let word = wordList[wordList.length -1]
-
-                // check to see if there is available room for
-                let lenFlag = true, heightFlag = true, upFlag = true;
-                if (!word){ break };
-                for (let l = 0; l < word.length; l++){
-                    // to right
-                    if (arr[i][z + l] !== "_"){ lenFlag = false }
-                    // verticle down
-                    if (arr[i + l][z] !== '_'){ heightFlag = false }
-                }
-
-                // if no room break loop and check next index
-                if (lenFlag === false && heightFlag === false){ break }
-
-                // horizontal word fill
-                if (num && lenFlag){
-                    // if there is room in the array
-                    if (availableLen >= word.length){
-                        // fill the word into the array.
-                        for (let g = 0; g < word.length; g++){
-                            arr[i][z + g] = word[g];
-                        }
-                    }
-                    list.pop()
-                }
-
-                //places the word, doesnt skip
-
-                // vertical wordfill
-                if(!num && heightFlag){
-                    if (availableHeight >= word.length){
-                        for (let h = 0; h < word.length; h++){
-                            arr[i + h][z] = word[h];
-                        }
-                    }
-                    list.pop()
-                }
-
-            }
-        }
 
     }
+    console.log(column, row);
 
-    console.timeEnd('start')
-    console.log(count);
-    return arr
-}
-
-//console.table(fillBoard(wordSearchArray, wordList))
-
-//  s s s   +1 +1 +1
-//+1 +1 +!  s s s
-
-
-const a = Array.from({ length: 10 }, () => Array(10).fill('_'));
-
-for (let b = 0; b < a.length; b++){
-    for (let c = 0; c < a[b].length; c++){
-        a[b][c] = `${b}.${c}`
-    }
 }
 
 
-//console.table(a);
-
-
-
-
-
-
-// while (wordList.length > 0){
-    // let word = wordList[wordList.length -1]blueviolet,
-
-    // loop through the array and find an index
-    // pick a direction, vertical or horizontal
-
-    // if horizontal
-    //     check if the word will fit in the array
-    //       check to see if every index is clear
-
-    // if vert
-    //     check if the word wil fit in the array
-    //     check to see if every index is clear
-
-    //if it wont fit restart next iteration
-
-    //if it will fit, and indexs are clear
-
-    //loop throught the word and place in array - vert and horizontal
-
-    // move to next word.
-
-
-
-
-
-
-
-
-
-    // for (let i = 0; i < arr.length; i++){
-    //     for(let z = 0; z < arr[i].length; z++){
-    //
-    //     }
-    // }
-
-//}
-
-
-
-
-
-
-// for (let i = 0; i < arr.length; i++){
-//
-//     console.table(arr)
-//
-//     for (let z = 0; z < arr[i].length; z++){
-//         // lower word placement chance
-//         if (Math.random() > 0.4){
-//             console.log("not this index");
-//             continue
-//         }
-//         // if word exist in index skip this index
-//         if (arr[i][z] !== "_"){
-//             console.log("there is a letter there");
-//             continue
-//         }
-//
-//         //chose vert or horizontal
-//         let num = Math.floor(Math.random() > 0.5)
-//
-//         // true = vettical, false = horizontal
-//         let availableLen = 9 - z;
-//         let availableHeight = 9 - i;
-//
-//
-//
-//         if (num){
-//             // if there is room in the array
-//             if (word.length > availableHeight){
-//                 continue
-//             }
-//             // check if the spaces are taken up
-//             let clear = true
-//             for (let g = 0 ; g < word.length; g++){
-//                 if (arr[i+g][z] !== "_"){
-//                     clear = false
-//                 }
-//             }
-//             if (!clear){ continue }
-//             // fill word into the main array
-//             for (let a = 0; a < word.length; a++){
-//                 arr[i+a][z] = word[a];
-//             }
-//             word = list[i +1]
-//             continue
-//         }
-//
-//         if(!num){
-//             // check if there is room in the array
-//             if (word.length > availableLen){
-//                 continue
-//             }
-//             // check if the spaces are availableLen
-//             let clear = true
-//             for (let g = 0 ; g < word.length; g++){
-//                 if (arr[i+g][z] !== "_"){
-//                     clear = false
-//                 }
-//             }
-//             if (!clear){ continue }
-//             // fill the word in the main array
-//             for (let a = 0; a < word.length; a++){
-//                 arr[i][z+a] = word[a];
-//             }
-//             word = list[i +1]
-//             continue
-//         }
-//     }
-// }
-// return arr
-
-
-// const fillBoard = (arr, list) => {
-//
-//     while (wordList.length > 1){
-//
-//         let word = wordList[wordList.length -1]
-//         for (let i = 0; i < arr.length; i++){
-//             console.table(arr)
-//             for (let z = 0; z < arr[i].length; z++){
-//                 // lower word placement chance
-//                 if (Math.random() > 0.4){
-//                     console.log("not this index");
-//                     continue
-//                 }
-//                 // if word exist in index skip this index
-//                 if (arr[i][z] !== "_"){
-//                     console.log("there is a letter there");
-//                     continue
-//                 }
-//
-//                 //chose vert or horizontal
-//                 let num = Math.floor(Math.random() > 0.5)
-//
-//                 // true = vettical, false = horizontal
-//                 let availableLen = 9 - z;
-//                 let availableHeight = 9 - i;
-//
-//
-//
-//                 if (num){
-//                     // if there is room in the array
-//                     if (word.length > availableHeight){
-//                         continue
-//                     }
-//                     // check if the spaces are taken up
-//                     let clear = true
-//                     for (let g = 0 ; g < word.length; g++){
-//                         if (arr[i+g][z] !== "_"){
-//                             clear = false
-//                         }
-//                     }
-//                     if (!clear){ continue }
-//                     // fill word into the main array
-//                     for (let a = 0; a < word.length; a++){
-//                         arr[i+a][z] = word[a];
-//                     }
-//                     wordList.pop()
-//                 }
-//
-//                 if(!num){
-//                     // check if there is room in the array
-//                     if (word.length > availableLen){
-//                         continue
-//                     }
-//                     // check if the spaces are availableLen
-//                     let clear = true
-//                     for (let g = 0 ; g < word.length; g++){
-//                         if (arr[i+g][z] !== "_"){
-//                             clear = false
-//                         }
-//                     }
-//                     if (!clear){ continue }
-//                     // fill the word in the main array
-//                     for (let a = 0; a < word.length; a++){
-//                         arr[i][z+a] = word[a];
-//                     }
-//                     wordList.pop();
-//                 }
-//             }
-//         }
-//     }
-//     return arr
-// }
-
-
-let x = 0;
-console.log("running");
-
-
-while (x <= 10){
-    x++
-    if (x === 5){ continue }
-    console.log(x);
-    if (x > 10) break;
-};
-
-console.log("lol");
+console.table(populate(wordSearchArray, wordList))

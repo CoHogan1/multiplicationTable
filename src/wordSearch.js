@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState } from 'react'; // ueRef
 
 // test data
-let rows = 10, cols = 10;
+let rows = 12, cols = 12;
 const wordSearchArray = Array.from({ length: rows }, () => Array(cols).fill('_'));
 
 let limit = 0
@@ -17,20 +17,24 @@ function WordSearch() {
     let wordList = ['all','call','fall','ball','tall','small','walk','talk',
     'chalk','baseball','rainfall','sidewalk','cornstalk','your','from']
 
-
+    // helper functions for main crossword population function.
     const generateRandomLetter = () => {
         // ASCII values for lowercase letters: 'a' is 97, 'z' is 122
         const randomCharCode = Math.floor(Math.random() * (122 - 97 + 1)) + 97;
         const randomLetter = String.fromCharCode(randomCharCode);
         return randomLetter;
     }
-
-    const generateIndex = () => {
-        let num = Math.floor(Math.random() * (8 - 1) + 1);
+    const generateIndexX = (word) => {
+        let num = Math.floor(Math.random() * (12 - 1) + 1);
         return num
     }
 
-    const fillRandomLetters = () => {
+    const generateIndexY = (word) => {
+        let num = Math.floor(Math.random() * (12 - 1) + 1);
+        return num
+    }
+
+    const fillRandomLetters = (crosswordGrid) => {
         // fill the non word spaces in the array with a letter
         for (let i = 0; i < crosswordGrid.length; i++){
             for (let z = 0; z < crosswordGrid[i].length; z++){
@@ -40,91 +44,127 @@ function WordSearch() {
             }
         }
     }
-    let num;
+    // check is there is space in the 2d array
+    const availableSpaceRow = (word, x, y, arr) => {
+        let ans = true;
+        // check to make sure word fits in array
+        if (word.length > rows -y){
+            ans = false
+            return;
+        }
+        for (let i = 0; i < word.length; i++){
+            if (arr[x][y+i] !== "_"){
+                ans = false;
+                break
+            }
+        }
+        return ans
+    }
+    // check if there is space in 2d array going down
+    const availableSpaceCol = (word, x, y, arr) => {
+        let ans = true;
+        // check to make sure word fits in array
+        if (word.length > cols - x){
+            ans = false
+            return
+        }
+        for (let i = 0; i < word.length; i++){
+            if (arr[x+i][y] !== "_"){
+                ans = false;
+                break;
+            }
+        }
+        return ans
+    }
+
+    //place the word in previous checked spaces-row
+    const placeWordRow = (word, x, y, arr) => {
+        for (let g = 0; g < word.length; g++){
+            arr[x][y + g] = word[g];
+        }
+        return arr;
+    }
+    // place previously checked word in spces-column
+    const placeWordCol = (word, x, y, arr) => {
+        for (let g = 0; g < word.length; g++){
+            arr[x + g][y] = word[g];
+        }
+        return arr;
+    }
 
     // populate the board with the specified letters.
     const fill = (words, board) => {
-        //console.time('start')
+        let direction;
+        console.time('start')
 
-        while(words.length > -1){
+        while(words.length > 0){
             //console.table(board);
-            limit++
-            if (limit > 2000) break;
+            if (limit > 200) break;
             let word = words[words.length -1]
             if (words.length === 0) break;
 
-            // pick a random index
-            let x = generateIndex()
-            let y = generateIndex()
+            // // pick a random index
+            let x = generateIndexX(word)
+            let y = generateIndexY(word)
+
+            if (board[x][y] !== "_") continue;
 
             // pick a direction, horizontal or vertical
-            num = num ? false: true;
+            direction = direction ? false: true;
 
-            let availableLen = 10 - y;
-            let availableUp = 10 - x;
+            let availableRow = board.length - y;
+            let availableCol = board.length - x;
 
             // check if there is room at current index for both directions
-            if (word.length > availableLen & word.length > availableUp){ continue }
-            // one of these are true, whiche one.
+            let col = word.length <= availableCol;
+            let row = word.length <= availableRow;
 
-            let up = true, over = true;
-            if (word.length > availableLen) over = false;
-            if (word.length > availableUp) up = false;
+            // no room for either directions
+            if (col === false && row === false){ continue }
 
+            // check to see if there is available room for word
+            // check there isnt a letter in that place already
+            if (wordList.length <= 0) break;
+            let lengthFlag, heightFlag;
 
-            // check to see if there is available room for word, and check to see if no words exist in index
-            let lenFlag = true, heightFlag = true;
-            if (!word){ break };
-            for (let l = 0; l < word.length; l++){
-                if (over){
-                    // to right
-                    if (board[x][y + l] !== "_"){ lenFlag = false }
-                }
-                if (up){
-                    // verticle down
-                    if (board[x + l][y] !== '_'){ heightFlag = false }
-                }
-            }
+            if (col) {lengthFlag = availableSpaceRow(word, x, y, wordSearchArray)};
+            if (row) {heightFlag = availableSpaceCol(word, x, y, wordSearchArray)};
 
             // check if there is room for a word in both directions
-            if (lenFlag === false && heightFlag === false){ continue }
+            if (lengthFlag === false && heightFlag === false){
+                continue
+             }
+             limit++
 
+            // just checking
+            if (word.length > availableRow) continue;
 
-            if (word.length > availableLen) continue;
-            // num == true => horizontal
-            if (num && lenFlag){
+            // place word verticlally
+            if (direction && lengthFlag){
                 // if there is room in the array
-                if (availableLen >= word.length){
-                    // fill the word into the array.
-                    for (let g = 0; g < word.length; g++){
-                        board[x][y + g] = word[g];
-                    }
+                if (availableRow >= word.length){
+                    placeWordRow(word, x, y, wordSearchArray);
+                    wordList.pop()
                 }
-                words.pop()
             }
-            if (words.length === 0) break;
 
-            if (word.length > availableUp) continue;
-            // num == false => vert
-            if (!num && heightFlag){
+            // place a word vertically
+            if (!direction && heightFlag){
                 // if there is room in the array
-                if (availableLen >= word.length){
-                    // fill the word into the array.
-                    for (let g = 0; g < word.length; g++){
-                        board[x+g][y] = word[g];
-                    }
+                if (availableCol >= word.length){
+                    placeWordCol(word, x, y, wordSearchArray);
+                    wordList.pop()
                 }
-                words.pop()
             }
 
         }
-
-        //console.timeEnd('start')
+        console.timeEnd('start')
+        console.log(wordList.length, "rest of words left");
         //console.log(limit);
         return board
     }
     const crosswordGrid = fill(wordList, wordSearchArray);
-    //fillRandomLetters();
+    fillRandomLetters(wordSearchArray);
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -145,8 +185,6 @@ function WordSearch() {
             setLongShot(edited)
             return;
         }
-
-
         // change the class so the item is highlighted
         e.target.classList.toggle('clicked')
         // lol idk
@@ -228,7 +266,6 @@ function WordSearch() {
             let second = values[j+1].split('');
             let val = second[0] -1
 
-
             if (first[0] !== `${val}`){
                 plumb = false;
             }
@@ -269,7 +306,6 @@ function WordSearch() {
         setGuess('');
         setValues([]);
         // check if all words are found.
-
     }
 
     const clearSelection = () => {
@@ -277,7 +313,6 @@ function WordSearch() {
         setGuess('')
         setValues([]);
         setLongShot([]);
-
     }
 
 
