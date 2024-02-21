@@ -10,7 +10,7 @@
   margin: auto;
   max-width: 700px;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .second {
@@ -176,18 +176,17 @@ input {
 .wordSearch {
     background: url('./backgrounds/cool.webp');
     background-size: cover;
-    width: 100vw;
-    height: 100vh;
-    margin: 20px auto;
-    margin-bottom: 0;
+    width: 100%;
+    height: 100%;
+    margin: auto;
     text-align: center;
 }
 
 .bg {
-    background: rgba(0 ,0, 0, 0.5);
-    height: 100%;
-    max-width: 500px;
+    background: rgba(40 ,0, 40, 0.5);
     margin: auto;
+    min-height: 100vh;
+    max-width: 500px;
     box-shadow: inset 0 0 15px rgba(0,0,0, 0.9);
     box-shadow: 0 0 10px 5px black;
 }
@@ -221,6 +220,10 @@ input {
     box-shadow: 0 4px 0 rgba(0,0,0, 0.5);
     font-size: 15px;
 
+}
+
+.fill {
+    width: 40px;
 }
 
 /* word search game board */
@@ -288,7 +291,7 @@ input {
 .guessMenu {
     margin: 10px auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 20px;
     width: 350px;
     height: 30px;

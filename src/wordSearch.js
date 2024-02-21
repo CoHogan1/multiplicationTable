@@ -4,6 +4,7 @@ import React, { useState } from 'react'; // ueRef
 // test data
 let rows = 12, cols = 12;
 const wordSearchArray = Array.from({ length: rows }, () => Array(cols).fill('_'));
+let temporary = Array.from({ length: rows }, () => Array(cols).fill(' '))
 
 let limit = 0
 
@@ -13,6 +14,7 @@ function WordSearch() {
     let [guess, setGuess] = useState('');
     //let [input, setInput] = useState('');
     let [score, setScore] = useState(0);
+    let [wordArray, setWordArray] = useState(temporary);
     //let [indexCheck, setIndexCheck] = useState('');
     let wordList = ['all','call','fall','ball','tall','small','walk','talk',
     'chalk','baseball','rainfall','sidewalk','cornstalk','your','from']
@@ -34,15 +36,18 @@ function WordSearch() {
         return num
     }
 
-    const fillRandomLetters = (crosswordGrid) => {
+    const fillRandomLetters = (grid) => {
+        console.log("filling random letters");
         // fill the non word spaces in the array with a letter
-        for (let i = 0; i < crosswordGrid.length; i++){
-            for (let z = 0; z < crosswordGrid[i].length; z++){
-                if (crosswordGrid[i][z] === "_"){
-                    crosswordGrid[i][z] = generateRandomLetter();
+        for (let i = 0; i < grid.length; i++){
+            for (let z = 0; z < grid.length; z++){
+                if (grid[i][z] === "_"){
+                    grid[i][z] = generateRandomLetter();
                 }
             }
         }
+        console.log("done");
+        return grid;
     }
     // check is there is space in the 2d array
     const availableSpaceRow = (word, x, y, arr) => {
@@ -93,13 +98,13 @@ function WordSearch() {
     }
 
     // populate the board with the specified letters.
-    const fill = (words, board) => {
+    const fill = (words, board, wLeft) => {
         let direction;
         console.time('start')
 
         while(words.length > 0){
             //console.table(board);
-            if (limit > 200) break;
+            if (limit > 500) break;
             let word = words[words.length -1]
             if (words.length === 0) break;
 
@@ -160,11 +165,23 @@ function WordSearch() {
         }
         console.timeEnd('start')
         console.log(wordList.length, "rest of words left");
-        //console.log(limit);
+        wLeft = words.length;
         return board
     }
-    const crosswordGrid = fill(wordList, wordSearchArray);
-    fillRandomLetters(wordSearchArray);
+
+    const genBoard = () => {
+        console.log("fill");
+        let wordsLeft = 0;
+        const temp = fill(wordList, wordSearchArray, wordsLeft);
+        fillRandomLetters(temp);
+        setWordArray(temp);
+        console.log(wordsLeft);
+    }
+
+
+    //const crosswordGrid = temp;
+    //const crosswordGrid = fill(wordList, wordSearchArray);
+    //fillRandomLetters(crosswordGrid);
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -318,6 +335,8 @@ function WordSearch() {
 
     return (
         <div className="wordSearch">
+
+
         <div className="bg">
             <div className="spacer"></div>
             <div className="wordBox">
@@ -327,18 +346,19 @@ function WordSearch() {
             </div>
 
             <div className="guessMenu">
+                <button className="fill" onClick={genBoard}>Fill</button>
                 <button onClick={clearSelection} className="clear">X</button>
                 <p className="guessBar">{guess}</p>
-                <button onClick={guessWord} className="guessButton">Guess</button>
+                <button onClick={guessWord} className="guessButton">&#10004;</button>
             </div>
 
             <div className="wordSearchBox">
-                {crosswordGrid.map((val,ind) => val.map((v,i) =>
+                {wordArray.map((val,ind) => val.map((v,i) =>
                     <div key={[ind,i]}
                         id={`${ind}-${i}`}
                          className="searchLetter"
                          onClick={clicked}
-                    >{crosswordGrid[ind][i]}</div>
+                    >{wordArray[ind][i]}</div>
                  ))}
             </div>
 
